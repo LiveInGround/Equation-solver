@@ -61,6 +61,19 @@ def solve_equation(input:str) -> None|tuple:
     
     for i, j in enumerate(right):
         if not(i in operators):
+            try:
+                sign = right[i-1]
+            except IndexError:
+                sign = "+"
+            left.append({"+":"-", "-":"+"}[sign])
+            left.append(i)
+            
+    x2 = 0
+    x = 0
+    c = 0
+    for i, j in enumerate(left):
+        if not("x" in j):
+            c += {"+":1, "-":-1}[left[i-1]] * j
+            
+        else:
             ...
-        
-    
