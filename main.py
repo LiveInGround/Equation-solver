@@ -1,5 +1,7 @@
 # EqSolver by lig
 
+import math
+
 operators = {"+", "-", "/", "X", "*", "^"}
 def is_float(input_str: str) -> bool:
     try:
@@ -20,10 +22,11 @@ def parse_equation(input_str: str):
         if i == "=":
             if equal:
                 raise ValueError("More than one '=' in the equation!")
-            equal = True
+            
             if char.strip():
                 (right if equal else left).append(char.strip())
                 char = ""
+            equal = True
         elif i in operators:
             if char.strip():
                 (right if equal else left).append(char.strip())
@@ -34,6 +37,10 @@ def parse_equation(input_str: str):
     
     if char.strip():
         (right if equal else left).append(char.strip())
+
+    for side in (left, right):
+        if side and side[0] not in operators:
+            side.insert(0, "+")
 
     if not equal:
         raise ValueError("No '=' found in the equation!")
@@ -60,13 +67,13 @@ def solve_equation(input:str) -> None|tuple:
     left, right = parse_equation(input)
     
     for i, j in enumerate(right):
-        if not(i in operators):
-            try:
-                sign = right[i-1]
-            except IndexError:
+        if not(j in operators):
+            if i - 1 < 0:
                 sign = "+"
+            else:
+                sign = right[i-1]
             left.append({"+":"-", "-":"+"}[sign])
-            left.append(i)
+            left.append(j)
             
     x2 = 0
     x = 0
@@ -76,4 +83,52 @@ def solve_equation(input:str) -> None|tuple:
             c += {"+":1, "-":-1}[left[i-1]] * j
             
         else:
-            ...
+            char = ""
+            puissance_v = ""
+            puissance = False
+            for k in j:
+                if k == "x":
+                    continue
+                elif k == "^" and not(puissance):
+                    puissance = True
+                elif k == "^" and puissance:
+                    raise Exception()
+                else:
+                    if puissance:
+                        puissance_v += k
+                    else:
+                        char += k
+            value = float(char)
+            if puissance_v != "":
+                p_n = int(puissance_v)
+            else:
+                p_n = 0
+            
+            if p_n == 0:
+                c += char * {"+":1, "-":-1}[left[i-1]]
+            elif p_n == 1:
+                x += char * {"+":1, "-":-1}[left[i-1]]
+            elif p_n == 2:
+                x2 += char * {"+":1, "-":-1}[left[i-1]]
+            else:
+                raise Exception("More than 2 degrees are not supported.")
+
+    if x2 != 0:
+        delta = x ** 2 - 4*x2*c
+        if delta < 0:
+            return None
+        elif delta > 0:
+            s1 = (-x - math.sqrt(delta))
+            s2 = (-x + math.sqrt(delta))
+            if s1 > s2:
+                return (s2, s1)
+            else:
+                return (s1, s2)
+        else:
+            return ((-x - math.sqrt(delta)), )
+    else:
+        return (-c/x, )
+        
+
+print(parse_equation("-4x^2-8x+4=5x"))
+print(solve_equation("-4x^2-8x+4=5x"))
