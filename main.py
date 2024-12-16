@@ -74,7 +74,8 @@ def solve_equation(input:str) -> None|tuple:
                 sign = right[i-1]
             left.append({"+":"-", "-":"+"}[sign])
             left.append(j)
-            
+
+    x3 = 0        
     x2 = 0
     x = 0
     c = 0
@@ -110,6 +111,8 @@ def solve_equation(input:str) -> None|tuple:
                 x += value * {"+":1, "-":-1}[left[i-1]]
             elif p_n == 2:
                 x2 += value * {"+":1, "-":-1}[left[i-1]]
+            elif p_n == 3:
+                x3 += value * {"+":1, "-":-1}[left[i-1]]
             else:
                 raise Exception("More than 2 degrees are not supported.")
 
@@ -117,7 +120,31 @@ def solve_equation(input:str) -> None|tuple:
     print(x)
     print(c)
 
-    if x2 != 0:
+    if x3 != 0:
+        p = (x2**2 - 3*x3*c) / (3*x3**2)
+        q = (2*x2**3 - 9*x3*x2*c + 27*x3**2*c) / (27*x3**3)
+
+        delta = (q / 2) ** 2 + (p / 3) ** 3
+
+        if delta > 0:
+            return math.pow(-(q/2)+math.sqrt(delta), 3) + math.pow(-(q/2)-math.sqrt(delta), 3)
+        elif delta == 0:
+            s1 = 2*math.pow(-(q/2), 3)
+            s2 = -math.pow(-(q/2), 3)
+
+            if s1 < s2:
+                return (s1, s2)
+            else:
+                return (s2, s1)
+        else:
+            theta = math.acos(-q / (2 * math.sqrt((-p / 3)**3)))
+            s1 = 2 * math.sqrt(-p / 3) * math.cos(theta / 3)
+            s2 = 2 * math.sqrt(-p / 3) * math.cos((theta + 2 * math.pi) / 3)
+            s3 = 2 * math.sqrt(-p / 3) * math.cos((theta + 4 * math.pi) / 3)
+
+            return (s1, s2, s3)
+
+    elif x2 != 0:
         delta = x ** 2 - 4*x2*c
         if delta < 0:
             print(delta)
