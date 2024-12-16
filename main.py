@@ -1,59 +1,54 @@
-import math
+def is_float(input_str: str) -> bool:
+    try:
+        float(input_str)
+        return True
+    except ValueError:
+        return False
 
-def is_float(input:str):
-    for i in input:
-        if i in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."]:
-            continue
-        else:
-            return False
-    return True
-
-def parse_equation(input:str):
+def parse_equation(input_str: str):
     left = []
     right = []
     equal = False
     char = ""
-    index = 0
     
-    operators = ("+", "-", "/", "X", "*")
+    operators = {"+", "-", "/", "X", "*", "^"}  # Notez que X est traité comme un opérateur.
     
-    for i in input:
-        if i == "=" and equal:
-            raise Exception("More than 1 ´=´ in the equation !")
-        elif i == "=" and not(equal):
-            equal = True
-            
-        elif i in operators:
+    for i in input_str:
+        if i == "=":
             if equal:
-                if is_float(char):
-                    right.append(float(char))
-                else:
-                    right.append(char)
-                right.append(i)
-                
-            else:
-                if is_float(char):
-                    left.append(float(char))
-                else:
-                    left.append(char)
-                left.append(i)
+                raise ValueError("More than one '=' in the equation!")
+            equal = True
+            if char.strip():
+                (right if equal else left).append(char.strip())
+                char = ""
+        elif i in operators:
+            if char.strip():
+                (right if equal else left).append(char.strip())
+            (right if equal else left).append(i)
+            char = ""
         else:
             char += i
-        index += 1
     
-    assert equal
-    
-    for i, j in enumerate(left):
-        if j == "x" and left[i+1] == "^":
-            left[i] = f"x^{i+2}"
-            del(left[i+1])
-            del(left[i+1])
-            
-    for i, j in enumerate(right):
-        if j == "x" and right[i+1] == "^":
-            right[i] = f"x^{i+2}"
-            del(right[i+1])
-            del(right[i+1])
-            
-            
-    return (left, right)
+    if char.strip():
+        (right if equal else left).append(char.strip())
+
+    if not equal:
+        raise ValueError("No '=' found in the equation!")
+
+    def process_side(side):
+        processed = []
+        skip = False
+        for i, item in enumerate(side):
+            if skip:
+                skip = False
+                continue
+            if item == "^" and i > 0 and i < len(side) - 1:
+                processed[-1] = f"{processed[-1]}^{side[i + 1]}"
+                skip = True
+            elif is_float(item):
+                processed.append(float(item))
+            else:
+                processed.append(item)
+        return processed
+
+    return process_side(left), process_side(right)
