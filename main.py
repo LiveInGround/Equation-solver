@@ -79,10 +79,10 @@ def solve_equation(input:str) -> None|tuple:
     x = 0
     c = 0
     for i, j in enumerate(left):
-        if not("x" in j):
+        if not("x" in str(j)) and not(j in operators):
             c += {"+":1, "-":-1}[left[i-1]] * j
             
-        else:
+        elif not(j in operators):
             char = ""
             puissance_v = ""
             puissance = False
@@ -102,24 +102,29 @@ def solve_equation(input:str) -> None|tuple:
             if puissance_v != "":
                 p_n = int(puissance_v)
             else:
-                p_n = 0
+                p_n = 1
             
             if p_n == 0:
-                c += char * {"+":1, "-":-1}[left[i-1]]
+                c += value * {"+":1, "-":-1}[left[i-1]]
             elif p_n == 1:
-                x += char * {"+":1, "-":-1}[left[i-1]]
+                x += value * {"+":1, "-":-1}[left[i-1]]
             elif p_n == 2:
-                x2 += char * {"+":1, "-":-1}[left[i-1]]
+                x2 += value * {"+":1, "-":-1}[left[i-1]]
             else:
                 raise Exception("More than 2 degrees are not supported.")
+
+    print(x2)
+    print(x)
+    print(c)
 
     if x2 != 0:
         delta = x ** 2 - 4*x2*c
         if delta < 0:
+            print(delta)
             return None
         elif delta > 0:
-            s1 = (-x - math.sqrt(delta))
-            s2 = (-x + math.sqrt(delta))
+            s1 = (-x - math.sqrt(delta)) /2 * x2
+            s2 = (-x + math.sqrt(delta)) /2 * x2
             if s1 > s2:
                 return (s2, s1)
             else:
@@ -127,8 +132,6 @@ def solve_equation(input:str) -> None|tuple:
         else:
             return ((-x - math.sqrt(delta)), )
     else:
+        assert x != 0
         return (-c/x, )
         
-
-print(parse_equation("-4x^2-8x+4=5x"))
-print(solve_equation("-4x^2-8x+4=5x"))
