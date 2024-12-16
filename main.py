@@ -1,3 +1,6 @@
+# EqSolver by lig
+
+operators = {"+", "-", "/", "X", "*", "^"}
 def is_float(input_str: str) -> bool:
     try:
         float(input_str)
@@ -11,7 +14,7 @@ def parse_equation(input_str: str):
     equal = False
     char = ""
     
-    operators = {"+", "-", "/", "X", "*", "^"}  # Notez que X est traité comme un opérateur.
+
     
     for i in input_str:
         if i == "=":
@@ -52,3 +55,12 @@ def parse_equation(input_str: str):
         return processed
 
     return process_side(left), process_side(right)
+
+def solve_equation(input:str) -> None|tuple:
+    left, right = parse_equation(input)
+    
+    for i, j in enumerate(right):
+        if not(i in operators):
+            ...
+        
+    
