@@ -1,6 +1,8 @@
 # EqSolver by lig
 
 import math
+import matplotlib.pyplot as plt
+import numpy as np
 
 operators = {"+", "-", "/", "X", "*", "^"}
 def is_float(input_str: str) -> bool:
@@ -63,7 +65,7 @@ def parse_equation(input_str: str):
 
     return process_side(left), process_side(right)
 
-def solve_equation(input:str) -> None|tuple:
+def solve_equation(input:str, show=False) -> None|tuple:
     left, right = parse_equation(input)
     
     for i, j in enumerate(right):
@@ -116,19 +118,36 @@ def solve_equation(input:str) -> None|tuple:
             else:
                 raise Exception("More than 2 degrees are not supported.")
 
-    print(x2)
-    print(x)
-    print(c)
+    def f(image):
+        return x3*image**3+x2*image**2+x*image+c
+    
+    alpha = -(x/2*x2)
+    beta = -(x**2-4*x2*c)/2*x2
+
+    x_ = np.linspace(int(round(alpha-10, 0)), int(round(alpha+10, 0)), int(round(beta+10, 0)) if beta > 0 else beta-10)
+    y = f(x_)
+
+    def g(img):
+        return 0 * img
+    
+    y2 = g(x_)
+    
+    ig, ax = plt.subplots()
+    ax.plot(x_, y, label=f"f(x)={x3}x^3+{x2}x^2+{x}x+{c}")
+    ax.plot(x_, y2, label=f"g(x)=0")
+    ax.set_title(input, size=14)
+    plt.legend()
+    plt.savefig("graph.png")
 
     if x3 != 0:
         p = (x2**2 - 3*x3*c) / (3*x3**2)
         q = (2*x2**3 - 9*x3*x2*c + 27*x3**2*c) / (27*x3**3)
 
-        delta = (q / 2) ** 2 + (p / 3) ** 3
+        d = (q / 2) ** 2 + (p / 3) ** 3
 
-        if delta > 0:
-            return math.pow(-(q/2)+math.sqrt(delta), 3) + math.pow(-(q/2)-math.sqrt(delta), 3)
-        elif delta == 0:
+        if d > 0:
+            return math.pow(-(q/2)+math.sqrt(d), 3) + math.pow(-(q/2)-math.sqrt(d), 3)
+        elif d == 0:
             s1 = 2*math.pow(-(q/2), 3)
             s2 = -math.pow(-(q/2), 3)
 
@@ -145,20 +164,20 @@ def solve_equation(input:str) -> None|tuple:
             return (s1, s2, s3)
 
     elif x2 != 0:
-        delta = x ** 2 - 4*x2*c
-        if delta < 0:
-            print(delta)
+        d = x ** 2 - 4*x2*c
+        if d < 0:
             return None
-        elif delta > 0:
-            s1 = (-x - math.sqrt(delta)) /2 * x2
-            s2 = (-x + math.sqrt(delta)) /2 * x2
+        elif d > 0:
+            s1 = (-x - math.sqrt(d)) /2 * x2
+            s2 = (-x + math.sqrt(d)) /2 * x2
             if s1 > s2:
                 return (s2, s1)
             else:
                 return (s1, s2)
         else:
-            return ((-x - math.sqrt(delta)), )
+            return ((-x - math.sqrt(d)), )
     else:
         assert x != 0
         return (-c/x, )
         
+solve_equation("-1x^2+5x=-2", True)
