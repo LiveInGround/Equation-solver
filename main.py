@@ -119,65 +119,64 @@ def solve_equation(input:str, show=False) -> None|tuple:
                 raise Exception("More than 2 degrees are not supported.")
 
     def f(image):
-        return x3*image**3+x2*image**2+x*image+c
-    
-    alpha = -(x/2*x2)
-    beta = -(x**2-4*x2*c)/2*x2
+        return x3 * image ** 3 + x2 * image ** 2 + x * image + c
 
-    x_ = np.linspace(int(round(alpha-10, 0)), int(round(alpha+10, 0)), int(round(beta+10, 0)) if beta > 0 else beta-10)
+    alpha = -(x / (2 * x2)) if x2 != 0 else 0
+    beta = abs((x ** 2 - 4 * x2 * c) / (2 * x2)) if x2 != 0 else 10
+
+    x_ = np.linspace(int(round(alpha - beta, 0)), int(round(alpha + beta, 0)), 500)
     y = f(x_)
 
     def g(img):
         return 0 * img
-    
+
     y2 = g(x_)
-    
-    ig, ax = plt.subplots()
+
+    fig, ax = plt.subplots()
     ax.plot(x_, y, label=f"f(x)={x3}x^3+{x2}x^2+{x}x+{c}")
-    ax.plot(x_, y2, label=f"g(x)=0")
-    ax.set_title(input, size=14)
-    plt.legend()
-    plt.savefig("graph.png")
+    ax.plot(x_, y2, label="g(x)=0")
+
+    solutions = []
 
     if x3 != 0:
-        p = (x2**2 - 3*x3*c) / (3*x3**2)
-        q = (2*x2**3 - 9*x3*x2*c + 27*x3**2*c) / (27*x3**3)
+        p = (x2 ** 2 - 3 * x3 * c) / (3 * x3 ** 2)
+        q = (2 * x2 ** 3 - 9 * x3 * x2 * c + 27 * x3 ** 2 * c) / (27 * x3 ** 3)
 
         d = (q / 2) ** 2 + (p / 3) ** 3
 
         if d > 0:
-            return math.pow(-(q/2)+math.sqrt(d), 3) + math.pow(-(q/2)-math.sqrt(d), 3)
+            sol = math.pow(-(q / 2) + math.sqrt(d), 1 / 3) + math.pow(-(q / 2) - math.sqrt(d), 1 / 3)
+            solutions = [sol]
         elif d == 0:
-            s1 = 2*math.pow(-(q/2), 3)
-            s2 = -math.pow(-(q/2), 3)
-
-            if s1 < s2:
-                return (s1, s2)
-            else:
-                return (s2, s1)
+            s1 = 2 * math.pow(-(q / 2), 1 / 3)
+            s2 = -math.pow(-(q / 2), 1 / 3)
+            solutions = [s1, s2]
         else:
-            theta = math.acos(-q / (2 * math.sqrt((-p / 3)**3)))
+            theta = math.acos(-q / (2 * math.sqrt((-p / 3) ** 3)))
             s1 = 2 * math.sqrt(-p / 3) * math.cos(theta / 3)
             s2 = 2 * math.sqrt(-p / 3) * math.cos((theta + 2 * math.pi) / 3)
             s3 = 2 * math.sqrt(-p / 3) * math.cos((theta + 4 * math.pi) / 3)
-
-            return (s1, s2, s3)
+            solutions = [s1, s2, s3]
 
     elif x2 != 0:
-        d = x ** 2 - 4*x2*c
-        if d < 0:
-            return None
-        elif d > 0:
-            s1 = (-x - math.sqrt(d)) /2 * x2
-            s2 = (-x + math.sqrt(d)) /2 * x2
-            if s1 > s2:
-                return (s2, s1)
-            else:
-                return (s1, s2)
-        else:
-            return ((-x - math.sqrt(d)), )
+        d = x ** 2 - 4 * x2 * c
+        if d > 0:
+            s1 = (-x - math.sqrt(d)) / (2 * x2)
+            s2 = (-x + math.sqrt(d)) / (2 * x2)
+            solutions = [s1, s2]
+        elif d == 0:
+            solutions = [-x / (2 * x2)]
     else:
-        assert x != 0
-        return (-c/x, )
+        solutions = [-c / x] if x != 0 else []
+
+    for sol in solutions:
+        ax.axvline(sol, color='r', linestyle='--', label=f"Solution: x={sol:.2f}")
+
+    ax.set_title(input, size=14)
+    plt.legend()
+    if show:
+        plt.savefig("graph.png")
+
+    return tuple(solutions) if solutions else None
         
 solve_equation("-1x^2+5x=-2", True)
