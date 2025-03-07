@@ -18,8 +18,6 @@ def parse_equation(input_str: str):
     equal = False
     char = ""
     
-
-    
     for i in input_str:
         if i == "=":
             if equal:
@@ -101,6 +99,8 @@ def solve_equation(input:str, show=False) -> None|tuple:
                         puissance_v += k
                     else:
                         char += k
+            if char == "":
+                char = 1
             value = float(char)
             if puissance_v != "":
                 p_n = int(puissance_v)
