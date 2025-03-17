@@ -166,16 +166,25 @@ def solve_equation(input:str, show=False) -> None|tuple:
             solutions = [s1, s2]
         elif d == 0:
             solutions = [-x / (2 * x2)]
+        elif d < 0:
+            s1 = (-x - complex(0, math.sqrt(-d))) / (2 * x2)
+            s2 = (-x + complew(0, math.sqrt(-d))) / (2 * x2)
+            solutions = [s1, s2]
     else:
         solutions = [-c / x] if x != 0 else []
 
-    for sol in solutions:
-        ax.axvline(sol, color='r', linestyle='--', label=f"Solution: x={sol:.2f}")
+    complex = False
+    for i in solutions:
+        if isinstance(i, complex):
+            complex = True
+        if not(complex):
+        for sol in solutions:
+            ax.axvline(sol, color='r', linestyle='--', label=f"Solution: x={sol:.2f}")
 
-    ax.set_title(input, size=14)
-    plt.legend()
-    if show:
-        plt.savefig("graph.png")
+        ax.set_title(input, size=14)
+        plt.legend()
+        if show:
+            plt.savefig("graph.png")
 
     return tuple(solutions) if solutions else None
         
