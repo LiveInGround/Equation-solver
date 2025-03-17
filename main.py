@@ -177,7 +177,7 @@ def solve_equation(input:str, show=False) -> None|tuple:
     for i in solutions:
         if isinstance(i, complex):
             complex = True
-        if not(complex):
+    if not(complex):
         for sol in solutions:
             ax.axvline(sol, color='r', linestyle='--', label=f"Solution: x={sol:.2f}")
 
