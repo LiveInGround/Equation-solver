@@ -168,7 +168,7 @@ def solve_equation(input:str, show=False) -> None|tuple:
             solutions = [-x / (2 * x2)]
         elif d < 0:
             s1 = (-x - complex(0, math.sqrt(-d))) / (2 * x2)
-            s2 = (-x + complew(0, math.sqrt(-d))) / (2 * x2)
+            s2 = (-x + complex(0, math.sqrt(-d))) / (2 * x2)
             solutions = [s1, s2]
     else:
         solutions = [-c / x] if x != 0 else []
