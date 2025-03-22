@@ -36,7 +36,9 @@ jobs:
 
     environment:
       name: pypi
-      url: https://pypi.org/project/equation_solver/
+      url: https://pypi.org/project/lig-equation-solver/
+    permissions:
+      id-token: write
 
     steps:
       - name: Retrieve release distributions
