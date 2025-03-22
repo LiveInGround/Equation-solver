@@ -3,6 +3,7 @@
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+from collections import defaultdict
 
 operators = {"+", "-", "/", "X", "*", "^"}
 def is_float(input_str: str) -> bool:
@@ -11,6 +12,15 @@ def is_float(input_str: str) -> bool:
         return True
     except ValueError:
         return False
+
+def reduce(*args: tuple[int, int]) -> list[tuple[int, int]]:
+    raise Exception("This function is not ready yet.")
+    terms = defaultdict(int)
+
+    for coef, exp in args:
+        terms[exp] += coef
+
+    return sorted(((coef, exp) for exp, coef in terms.items() if coef != 0), key=lambda x: -x[1])
 
 def parse_equation(input_str: str):
     left = []
@@ -198,4 +208,5 @@ def solve_equation(input:str, show=False) -> None|tuple:
 
     return tuple(solutions) if solutions else None
         
-print(solve_equation("-1x^2+5x=-2", False))
+#print(solve_equation("-1x^2+5x=-2", False))
+print(parse_expression("5x^2+3x+2"))
