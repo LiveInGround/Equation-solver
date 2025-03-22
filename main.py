@@ -75,6 +75,10 @@ def solve_equation(input:str, show=False) -> None|tuple:
             left.append({"+":"-", "-":"+"}[sign])
             left.append(j)
 
+    """NOTE : 
+    The following variables are not named as the exact way.
+    In an equation like ax^3 + bx^2 + cx + d = 0, x3 is a, x2 is b, x is c and c is d."""
+    
     x3 = 0        
     x2 = 0
     x = 0
