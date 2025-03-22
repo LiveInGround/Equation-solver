@@ -78,7 +78,7 @@ def solve_equation(input:str, show=False) -> None|tuple:
     """NOTE : 
     The following variables are not named as the exact way.
     In an equation like ax^3 + bx^2 + cx + d = 0, x3 is a, x2 is b, x is c and c is d."""
-    
+
     x3 = 0        
     x2 = 0
     x = 0
@@ -120,7 +120,7 @@ def solve_equation(input:str, show=False) -> None|tuple:
             elif p_n == 3:
                 x3 += value * {"+":1, "-":-1}[left[i-1]]
             else:
-                raise Exception("More than 2 degrees are not supported.")
+                raise Exception("More than degree 3 are not supported.")
 
     def f(image):
         return x3 * image ** 3 + x2 * image ** 2 + x * image + c
@@ -143,6 +143,7 @@ def solve_equation(input:str, show=False) -> None|tuple:
     solutions = []
 
     if x3 != 0:
+        raise Exception("Degree 3 is currently bugged, it will be awaiable in a future update.")
         p = (x2 ** 2 - 3 * x3 * c) / (3 * x3 ** 2)
         q = (2 * x2 ** 3 - 9 * x3 * x2 * c + 27 * x3 ** 2 * c) / (27 * x3 ** 3)
 
@@ -192,4 +193,4 @@ def solve_equation(input:str, show=False) -> None|tuple:
 
     return tuple(solutions) if solutions else None
         
-print(solve_equation("-1x^2+5x=-2", False))
+print(solve_equation("-1x^3+5x=-2", False))
