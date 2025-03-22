@@ -173,11 +173,11 @@ def solve_equation(input:str, show=False) -> None|tuple:
     else:
         solutions = [-c / x] if x != 0 else []
 
-    complex = False
+    complex_mode = False
     for i in solutions:
         if isinstance(i, complex):
-            complex = True
-    if not(complex):
+            complex_mode = True
+    if not(complex_mode):
         for sol in solutions:
             ax.axvline(sol, color='r', linestyle='--', label=f"Solution: x={sol:.2f}")
 
@@ -188,4 +188,4 @@ def solve_equation(input:str, show=False) -> None|tuple:
 
     return tuple(solutions) if solutions else None
         
-solve_equation("-1x^2+5x=-2", True)
+print(solve_equation("-1x^2+5x=-2", False))
