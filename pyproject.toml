@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "equation_solver"
+version = "1.0.0"
+description = "An equation solver"
+authors = [{name = "LiveInGround", email = "8bronchi.costly@icloud.com"}]
+dependencies = []
