@@ -7,6 +7,7 @@ from collections import defaultdict
 
 operators = {"+", "-", "/", "X", "*", "^"}
 def is_float(input_str: str) -> bool:
+    """Check if a string can be converted as a float."""
     try:
         float(input_str)
         return True
@@ -14,6 +15,7 @@ def is_float(input_str: str) -> bool:
         return False
 
 def reduce(*args: tuple[int, int]) -> list[tuple[int, int]]:
+    """This will be implemented in a future update. It will reduce the terms of the equation."""
     raise Exception("This function is not ready yet.")
     terms = defaultdict(int)
 
@@ -22,7 +24,10 @@ def reduce(*args: tuple[int, int]) -> list[tuple[int, int]]:
 
     return sorted(((coef, exp) for exp, coef in terms.items() if coef != 0), key=lambda x: -x[1])
 
-def parse_equation(input_str: str):
+def parse_equation(input_str: str) -> tuple[list[str], list[str]]:
+    """This function analyse the given string and return a tuple of two lists, the left and right side of the equation."""
+    if not input_str:
+        raise ValueError("Empty string")
     left = []
     right = []
     equal = False
@@ -73,7 +78,12 @@ def parse_equation(input_str: str):
 
     return process_side(left), process_side(right)
 
-def solve_equation(input:str, show=False) -> None|tuple:
+def solve_equation(input:str, show=False) -> None|tuple[float, float|complex|str|None, float|complex|str|None]:
+    """This function solve the given equation and return the solutions.
+    Args:
+        input (str): The equation to solve.
+        show (bool): If True, the graph will be saved as an image named graph.png."""
+    
     left, right = parse_equation(input)
     
     for i, j in enumerate(right):
