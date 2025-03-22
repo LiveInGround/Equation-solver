@@ -1,4 +1,7 @@
-# EqSolver by lig
+# An Equation Solver by LiveInGround
+# This code is under the MIT License.
+# You can find the license in the LICENSE file or at the following URL: https://opensource.org/licenses/MIT
+# There will be future updates to this code, so stay tuned!
 
 import math
 import matplotlib.pyplot as plt
@@ -217,5 +220,3 @@ def solve_equation(input:str, show=False) -> None|tuple[float, float|complex|str
             plt.savefig("graph.png")
 
     return tuple(solutions) if solutions else None
-        
-#print(solve_equation("-1x^2+5x=-2", False))
