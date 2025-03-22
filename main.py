@@ -142,6 +142,8 @@ def solve_equation(input:str, show=False) -> None|tuple:
 
     solutions = []
 
+    issue = False
+
     if x3 != 0:
         raise Exception("Degree 3 is currently bugged, it will be awaiable in a future update.")
         p = (x2 ** 2 - 3 * x3 * c) / (3 * x3 ** 2)
@@ -172,17 +174,20 @@ def solve_equation(input:str, show=False) -> None|tuple:
         elif d == 0:
             solutions = [-x / (2 * x2)]
         elif d < 0:
-            s1 = (-x - complex(0, math.sqrt(-d))) / (2 * x2)
-            s2 = (-x + complex(0, math.sqrt(-d))) / (2 * x2)
+            s1 = (-x - 1j * math.sqrt(-d)) / (2 * x2)
+            s2 = (-x + 1j * math.sqrt(-d)) / (2 * x2)
             solutions = [s1, s2]
+    elif x != 0:
+        solutions = [-c / x]
     else:
-        solutions = [-c / x] if x != 0 else []
+        solutions = ["Infinité solutions" if c == 0 else "No solution"]
+        issue = True
 
     complex_mode = False
     for i in solutions:
         if isinstance(i, complex):
             complex_mode = True
-    if not(complex_mode):
+    if not(complex_mode) and not(issue):
         for sol in solutions:
             ax.axvline(sol, color='r', linestyle='--', label=f"Solution: x={sol:.2f}")
 
@@ -193,4 +198,4 @@ def solve_equation(input:str, show=False) -> None|tuple:
 
     return tuple(solutions) if solutions else None
         
-print(solve_equation("-1x^3+5x=-2", False))
+print(solve_equation("-1x^2+5x=-2", False))
