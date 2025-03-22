@@ -209,4 +209,3 @@ def solve_equation(input:str, show=False) -> None|tuple:
     return tuple(solutions) if solutions else None
         
 #print(solve_equation("-1x^2+5x=-2", False))
-print(parse_expression("5x^2+3x+2"))
