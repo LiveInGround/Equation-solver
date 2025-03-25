@@ -1,10 +1,25 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling", "requests"]
+build-backend = "hatchling.build"
 
 [project]
-name = "equation_solver"
+name = "lig_equation_solver"
 version = "1.0.0"
-description = "An equation solver"
-authors = [{name = "LiveInGround", email = "8bronchi.costly@icloud.com"}]
-dependencies = []
+authors = [
+  { name="LiveInGround", email="remorqueur.eprouve_0b@icloud.com" },
+]
+description = "An equation_solver"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["equation_solver"]
+
+[project.urls]
+Homepage = "https://github.com/LiveInGround/Equation-solver"
+Issues = "https://github.com/LiveInGround/Equation-solver/issues"
