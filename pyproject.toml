@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "lig_equation_solver"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="LiveInGround", email="remorqueur.eprouve_0b@icloud.com" },
 ]
@@ -18,7 +18,7 @@ classifiers = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["equation_solver"]
+packages = ["lig_equation_solver"]
 
 [project.urls]
 Homepage = "https://github.com/LiveInGround/Equation-solver"
