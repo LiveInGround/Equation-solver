@@ -1,6 +1,6 @@
 import math
 
-class Square(object):
+class SquareRoot(object):
     def __init__(self, value):
         self.value=value
         
@@ -24,4 +24,9 @@ class Diff(object):
         
         ... # return up/down
         
+def Pi(object):
+    def __repr__(self):
+        return "{pi}"
         
+    def calculate(self):
+        return math.pi
